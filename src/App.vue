@@ -31,7 +31,7 @@ const isActive = (path) => {
     <template #logo>
       <fwb-navbar-logo
         alt="logo"
-        image-url="../public/images/logo.png"
+        image-url="./public/images/logo.png"
         link="#"
         class="object-cover"
       >
