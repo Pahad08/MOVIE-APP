@@ -1,70 +1,80 @@
 <script setup>
-import {
-  FwbNavbar,
-  FwbNavbarCollapse,
-  FwbNavbarLink,
-  FwbNavbarLogo,
-  FwbInput,
-} from "flowbite-vue";
+import Navbar from "./Components/ui/Navbar.vue";
+import { Clapperboard, MenuIcon, Search } from "lucide-vue-next";
+import Input from "./Components/ui/Input.vue";
 import { ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
-const router = useRouter();
-const route = useRoute();
 
+const showDropdownMenu = ref(false);
+const showSearchDropdown = ref(false);
 const search = ref("");
 
-const navigate = (path, e) => {
-  e.preventDefault();
-  router.replace(path);
-  router.push(path);
-};
+function showSearch() {
+  showDropdownMenu.value = false;
+  showSearchDropdown.value = !showSearchDropdown.value;
+}
 
-const isActive = (path) => {
-  return path === route.fullPath;
-};
+function showMenu() {
+  showDropdownMenu.value = !showDropdownMenu.value;
+  showSearchDropdown.value = false;
+}
+
+const links = [
+  {
+    label: "Movies",
+    url: "/",
+  },
+  {
+    label: "Tv Shows",
+    url: "/counter",
+  },
+  {
+    label: "Actors",
+    url: "/counter",
+  },
+];
 </script>
 
 <template>
-  <fwb-navbar
-    class="z-50 border-b fixed w-full border-gray-500 md:px-20! px-7 top-0"
+  <Navbar
+    :links="links"
+    :showDropdownMenu="showDropdownMenu"
+    :searchDropdown="showSearchDropdown"
   >
     <template #logo>
-      <fwb-navbar-logo
-        alt="logo"
-        image-url="./public/images/logo.png"
-        link="#"
-        class="object-cover"
+      <Clapperboard />
+      <span class="text-lg font-semibold">Movie App</span>
+    </template>
+
+    <template #end>
+      <button
+        type="button"
+        @click="showSearch"
+        class="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 me-1"
       >
-        Movie App
-      </fwb-navbar-logo>
+        <Search />
+        <span class="sr-only">Search</span>
+      </button>
+
+      <div class="relative hidden md:block">
+        <Input placeholder="Search..." v-model="search" />
+      </div>
+
+      <button
+        type="button"
+        @click="showMenu"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+      >
+        <span class="sr-only">Open main menu</span>
+        <MenuIcon />
+      </button>
     </template>
 
-    <template #default="{ isShowMenu }">
-      <fwb-navbar-collapse :is-show-menu="isShowMenu">
-        <fwb-navbar-link @click="navigate('/', $event)">
-          <span :class="{ 'text-white': isActive('/') }">Movies</span>
-        </fwb-navbar-link>
-
-        <fwb-navbar-link @click="navigate('/counter', $event)">
-          <span :class="{ 'text-white': isActive('/counter') }">Tv Shows</span>
-        </fwb-navbar-link>
-
-        <fwb-navbar-link @click="navigate('/counter', $event)">
-          <span :class="{ 'text-white': isActive('/counter') }">Actors</span>
-        </fwb-navbar-link>
-
-        <fwb-input placeholder="Search" size="sm" class="sm:hidden mt-2" />
-      </fwb-navbar-collapse>
+    <template #searchDropdown>
+      <Input placeholder="Search..." class="w-full" v-model="search" />
     </template>
+  </Navbar>
 
-    <template #right-side>
-      <fwb-input placeholder="Search" size="sm" v-model="search" />
-    </template>
-  </fwb-navbar>
-
-  <main class="w-full bg-gray-900">
-    <div class="md:mt-18 mt-15">
-      <RouterView />
-    </div>
+  <main class="w-full">
+    <RouterView />
   </main>
 </template>

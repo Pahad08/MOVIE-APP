@@ -1,6 +1,5 @@
 <script setup>
-import { FwbCard } from "flowbite-vue";
-import { Star } from "lucide-vue-next";
+import { MoveRight } from "lucide-vue-next";
 
 const props = defineProps([
   "movie_img_path",
@@ -24,13 +23,16 @@ function parseDate(date) {
 </script>
 
 <template>
-  <fwb-card
-    img-alt="movie_title"
-    :img-src="movie_img_path"
-    variant="image"
-    class="max-w-full! group [&>img:hover]:opacity-75 [&>img]:transition [&>img]:ease-in-out [&>img]:duration-150"
+  <div
+    class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-neutral-800 dark:border-neutral-700"
   >
-    <div class="p-3">
+    <img
+      class="rounded-t-lg hover:opacity-75 transition ease-in-out duration-150"
+      :src="movie_img_path"
+      alt="poster"
+    />
+
+    <div class="p-5">
       <RouterLink
         :to="`/movie/${movie_id}`"
         class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white hover:underline"
@@ -47,5 +49,5 @@ function parseDate(date) {
         <div class="text-gray-400 text-sm mt-2">{{ genres }}</div>
       </div>
     </div>
-  </fwb-card>
+  </div>
 </template>
